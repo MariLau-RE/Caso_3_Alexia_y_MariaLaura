@@ -39,7 +39,7 @@ public:
 };
 
 main () {
-    Observer* firstObserver = new Anigmation();
+    Observer* firstObserver = new Animation();
     Subject* selectionSubject = new Selection();
 
     return 0;
