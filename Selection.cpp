@@ -13,17 +13,19 @@ public:
     Selection() {}
     ~Selection() {}
 
-    void attach(Observer* color) {
+    void attachObserver(Observer* color) {
         colorList.emplace_back(color);
     }
 
-    void detach(Observer* color) {
+    void detachObserver(Observer* color) {
         colorList.remove(color);
     }
 
-    void notify() {
+    void notifyObserver() {
         for (Observer* actual : colorList) {
             actual->updateObserver();
         }
     }
 };
+
+

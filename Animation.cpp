@@ -8,5 +8,5 @@ class Animation : public Observer {
 public:
     Animation() {}
     ~Animation() {}
-    void update() {}
+    void updateObserver() {}
 };
