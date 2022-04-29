@@ -23,7 +23,6 @@ void extractNodeData(xml_node<>* node){
         cout << "\tAtributo: " << attrib->name() << endl;
         cout << "\t-Valor: " << attrib->value() << endl;
       }
-
       extractNodeData(node);
     }
   }

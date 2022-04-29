@@ -6,18 +6,18 @@
 #include "Read.cpp"
 
 int main () {
-    Observer* firstObserver = new Animation();
-    Subject* selectionSubject = new Selection();
-
-    int colorList []={};
-    int puntosAbsolutosList []={};
+    vector <int> colorList;
+    vector <float> absolutePointsList;
     float angle;
     int frames;
 
-      //Leer XML
-        file<> file("sample.svg"); // Lee y carga el archivo en memoria
-        xml_document<> myDoc; //Raíz del árbol DOM
-        myDoc.parse<0>(file.data()); //Parsea el XML en un DOM
-    
+    //Read XML
+    file<> file("sample.svg"); 
+    xml_document<> myDoc; 
+    myDoc.parse<0>(file.data());
+
+    Observer* firstObserver = new Animation();
+    Subject* selectionSubject = new Selection(colorList, absolutePointsList, &myDoc);
+
     return 0;
 }
