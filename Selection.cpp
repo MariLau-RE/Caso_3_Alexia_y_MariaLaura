@@ -2,11 +2,20 @@
 #include <vector>
 
 #include "Observer.hpp"
-#include "Read.hpp"
+//#include "Read.hpp"
+
+#include <iostream>
+#include "rapidxml/rapidxml_ext.hpp" //Clases para manejo del DOM
+#include "rapidxml/rapidxml_utils.hpp" //Clase File
+#include <sstream>
+#include <fstream>
+
+using namespace std;
+using namespace rapidxml; //Namespace de la librería
 using namespace std;
 
 //Recorre el elemento raíz del documento
-void extractXMLData(xml_document<>* doc){
+void printXMLData(xml_document<>* doc){
   xml_node<>* node = doc->first_node();
 
   cout << "Etiqueta: " << node->name() << endl;
@@ -15,11 +24,11 @@ void extractXMLData(xml_document<>* doc){
     cout << "\tValor: " << attrib->value() << endl;
   }
 
-  extractNodeData(node);
+  printNodeData(node);
 }
 
 //Recorre el resto de elementos del documento
-void extractNodeData(xml_node<>* node){
+void printNodeData(xml_node<>* node){
   for (node = node->first_node(); node != NULL; node = node->next_sibling()){
     if (node->type() == node_element){
       cout << "Etiqueta: " << node->name() << endl;
@@ -28,7 +37,7 @@ void extractNodeData(xml_node<>* node){
         cout << "\tAtributo: " << attrib->name() << endl;
         cout << "\t-Valor: " << attrib->value() << endl;
       }
-      extractNodeData(node);
+      printNodeData(node);
     }
   }
 }
@@ -42,7 +51,7 @@ int main (){
     myDoc.parse<0>(file.data()); //Parsea el XML en un DOM
 
     //Recorrer elementos y atributos
-    extractXMLData(&myDoc);
+    //printXMLData(&myDoc);
 
   //Modificar un atributo existente
   //Modifica el atributo indicado del primer elemento <path> que se encuentre
@@ -54,5 +63,6 @@ int main (){
   string newColor = "pink";
   modifyNode->first_attribute("stroke")->value(newColor.c_str());
 
+  printXMLData(&myDoc);
 
 }
