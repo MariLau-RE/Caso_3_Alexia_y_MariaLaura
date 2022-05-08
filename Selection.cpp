@@ -1,5 +1,4 @@
 #include <vector>
-#include <list>
 #include <iostream>
 #include "rapidxml/rapidxml_ext.hpp" //classes for managing the DOM
 #include "rapidxml/rapidxml_utils.hpp" //file class
@@ -12,14 +11,15 @@ using namespace std;
 
 class Selection{
   private: 
-    list <string> colorList;
-    list <double> absolutePoints;
+    vector <string> colorList;
+    vector <double> absolutePoints;
     vector <xml_node<>*> vectorPaths;
 
   public:
-    Selection(list <string> _colorList, list <double> _absolutePoints){
+    Selection(vector <string> _colorList, vector <double> _absolutePoints){
       colorList = _colorList;
       absolutePoints = _absolutePoints;
+      
     }
     void printXMLData(xml_document<>* doc);
     void printNodeData(xml_node<>* node);
@@ -30,14 +30,10 @@ void Selection::printNodeData(xml_node<>* node){
   for (node = node->first_node(); node != NULL; node = node->next_sibling()){
     if (node->type() == node_element){
       string nodeName = node->name();
-      
-      //cout << "Etiqueta: " << nodeName << endl;
 
       xml_attribute<>* attrib = node->first_attribute();
       
       if(nodeName == "path"){
-        //cout << "\tAtributo: " << attrib->name() << endl;
-        cout << "*****se agrega al vector" << endl; 
         vectorPaths.push_back(node);
       }
 
@@ -60,14 +56,15 @@ void Selection:: printXMLData(xml_document<>* doc){
 }
 
 int main (){
-  list <string> colorList;
-  list <double> absolutePoints;
 
+  vector <string> colorList;
+  vector <double> absolutePoints;
+  
   file<> file("Forest.svg"); // read and load file into memorya
   xml_document<> myDoc; 
   myDoc.parse<0>(file.data()); 
 
-  Selection selection = new Selection(colorList, absolutePoints);
+  Selection selection = Selection(colorList, absolutePoints);
 
   selection.printXMLData(&myDoc);
   
