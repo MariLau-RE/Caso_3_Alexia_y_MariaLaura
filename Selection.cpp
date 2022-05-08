@@ -1,31 +1,13 @@
-#include <iostream>
 #include <vector>
-
-#include "Observer.hpp"
-//#include "Read.hpp"
-
 #include <iostream>
 #include "rapidxml/rapidxml_ext.hpp" //Clases para manejo del DOM
 #include "rapidxml/rapidxml_utils.hpp" //Clase File
 #include <sstream>
 #include <fstream>
+#include "Observer.hpp"
 
-using namespace std;
 using namespace rapidxml; //Namespace de la librería
 using namespace std;
-
-//Recorre el elemento raíz del documento
-void printXMLData(xml_document<>* doc){
-  xml_node<>* node = doc->first_node();
-
-  cout << "Etiqueta: " << node->name() << endl;
-  for (xml_attribute<>* attrib = node->first_attribute(); attrib != NULL; attrib = attrib->next_attribute()){
-    cout << " Atributo: " << attrib->name() << endl;
-    cout << "\tValor: " << attrib->value() << endl;
-  }
-
-  printNodeData(node);
-}
 
 //Recorre el resto de elementos del documento
 void printNodeData(xml_node<>* node){
@@ -43,6 +25,21 @@ void printNodeData(xml_node<>* node){
 }
 
 
+//Recorre el elemento raíz del documento
+void printXMLData(xml_document<>* doc){
+  xml_node<>* node = doc->first_node();
+
+  cout << "Etiqueta: " << node->name() << endl;
+  for (xml_attribute<>* attrib = node->first_attribute(); attrib != NULL; attrib = attrib->next_attribute()){
+    cout << " Atributo: " << attrib->name() << endl;
+    cout << "\tValor: " << attrib->value() << endl;
+  }
+
+  printNodeData(node);
+}
+
+
+
 int main (){
 
     //Leer el archivo
@@ -56,6 +53,7 @@ int main (){
   //Modificar un atributo existente
   //Modifica el atributo indicado del primer elemento <path> que se encuentre
   xml_node<> *modifyNode = myDoc.first_node()->first_node("path");
+  printXMLData(&myDoc);
 
   string newDirection = "M 10 10 L 50 50 L 10 50 Z";
   modifyNode->first_attribute("d")->value(newDirection.c_str());
@@ -63,6 +61,6 @@ int main (){
   string newColor = "pink";
   modifyNode->first_attribute("stroke")->value(newColor.c_str());
 
-  printXMLData(&myDoc);
+  
 
 }
