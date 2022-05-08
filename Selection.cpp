@@ -1,32 +1,53 @@
 #include <vector>
+#include <list>
 #include <iostream>
-#include "rapidxml/rapidxml_ext.hpp" //Clases para manejo del DOM
-#include "rapidxml/rapidxml_utils.hpp" //Clase File
+#include "rapidxml/rapidxml_ext.hpp" //classes for managing the DOM
+#include "rapidxml/rapidxml_utils.hpp" //file class
 #include <sstream>
 #include <fstream>
 #include "Observer.hpp"
 
-using namespace rapidxml; //Namespace de la librería
+using namespace rapidxml; //library namespace
 using namespace std;
 
-//Recorre el resto de elementos del documento
-void printNodeData(xml_node<>* node){
+class Selection{
+  private: 
+    list <string> colorList;
+    list <double> absolutePoints;
+    vector <xml_node<>*> vectorPaths;
+
+  public:
+    Selection(list <string> _colorList, list <double> _absolutePoints){
+      colorList = _colorList;
+      absolutePoints = _absolutePoints;
+    }
+    void printXMLData(xml_document<>* doc);
+    void printNodeData(xml_node<>* node);
+};
+
+//goes through the rest of the elements of the document
+void Selection::printNodeData(xml_node<>* node){
   for (node = node->first_node(); node != NULL; node = node->next_sibling()){
     if (node->type() == node_element){
-      cout << "Etiqueta: " << node->name() << endl;
+      string nodeName = node->name();
+      
+      //cout << "Etiqueta: " << nodeName << endl;
 
-      for (xml_attribute<>* attrib = node->first_attribute(); attrib != NULL; attrib = attrib->next_attribute()){
-        cout << "\tAtributo: " << attrib->name() << endl;
-        cout << "\t-Valor: " << attrib->value() << endl;
+      xml_attribute<>* attrib = node->first_attribute();
+      
+      if(nodeName == "path"){
+        //cout << "\tAtributo: " << attrib->name() << endl;
+        cout << "*****se agrega al vector" << endl; 
+        vectorPaths.push_back(node);
       }
+
       printNodeData(node);
     }
   }
 }
 
-
-//Recorre el elemento raíz del documento
-void printXMLData(xml_document<>* doc){
+//Loop through the root element of the document
+void Selection:: printXMLData(xml_document<>* doc){
   xml_node<>* node = doc->first_node();
 
   cout << "Etiqueta: " << node->name() << endl;
@@ -38,29 +59,16 @@ void printXMLData(xml_document<>* doc){
   printNodeData(node);
 }
 
-
-
 int main (){
+  list <string> colorList;
+  list <double> absolutePoints;
 
-    //Leer el archivo
-    file<> file("1801287.svg"); // Lee y carga el archivo en memoria
-    xml_document<> myDoc; //Raíz del árbol DOM
-    myDoc.parse<0>(file.data()); //Parsea el XML en un DOM
+  file<> file("Forest.svg"); // read and load file into memorya
+  xml_document<> myDoc; 
+  myDoc.parse<0>(file.data()); 
 
-    //Recorrer elementos y atributos
-    //printXMLData(&myDoc);
+  Selection selection = new Selection(colorList, absolutePoints);
 
-  //Modificar un atributo existente
-  //Modifica el atributo indicado del primer elemento <path> que se encuentre
-  xml_node<> *modifyNode = myDoc.first_node()->first_node("path");
-  printXMLData(&myDoc);
-
-  string newDirection = "M 10 10 L 50 50 L 10 50 Z";
-  modifyNode->first_attribute("d")->value(newDirection.c_str());
-
-  string newColor = "pink";
-  modifyNode->first_attribute("stroke")->value(newColor.c_str());
-
+  selection.printXMLData(&myDoc);
   
-
 }
