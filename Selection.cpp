@@ -24,6 +24,7 @@ class Selection{
     void printXMLData(xml_document<>* doc);
     void printNodeData(xml_node<>* node);
     void printPath();
+    void analyzePath();
 };
 
 //goes through the rest of the elements of the document
@@ -70,6 +71,16 @@ void Selection::printPath(){
       //cada path mandarlo al metodo analizar
     }
   }
+}
+
+void Selection::analyzePath(){
+
+    vector <string> matchColorList;
+
+    for(int i = 0; i < vectorPaths.size(); i++){
+
+
+    }
 }
 
 int main (){
