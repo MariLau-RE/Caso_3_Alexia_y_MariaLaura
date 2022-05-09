@@ -23,6 +23,7 @@ class Selection{
     }
     void printXMLData(xml_document<>* doc);
     void printNodeData(xml_node<>* node);
+    void printPath();
 };
 
 //goes through the rest of the elements of the document
@@ -55,6 +56,16 @@ void Selection:: printXMLData(xml_document<>* doc){
   printNodeData(node);
 }
 
+//Print all the paths 
+void Selection::printPath(){
+
+    for(int i=0; i<vectorPaths.size(); i++){
+
+        cout <<"Etiqueta"<< vectorPaths[i]->name() <<endl;
+
+}
+}
+
 int main (){
 
   vector <string> colorList;
@@ -66,6 +77,8 @@ int main (){
 
   Selection selection = Selection(colorList, absolutePoints);
 
-  selection.printXMLData(&myDoc);
+  //selection.printXMLData(&myDoc);
+
+  selection.printPath();
   
 }
