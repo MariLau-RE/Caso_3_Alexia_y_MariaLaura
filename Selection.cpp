@@ -18,62 +18,59 @@ class Selection{
     vector <double> matchAbsolutePoints;
 
   public:
-    Selection(vector <string> _colorList, vector<vector<float>> _absolutePoints){
-      colorList = _colorList;
-      absolutePoints = _absolutePoints;
+    Selection(vector <string> pColorList, vector<vector<float>> pAbsolutePoints){
+      colorList = pColorList;
+      absolutePoints = pAbsolutePoints;
       
     }
-    void extractXMLData(xml_document<>* doc);
-    void extractNodeData(xml_node<>* node);
-    void nose();
-    void analyzeColor(xml_node<>* pathFound);
+    void extractXMLData(xml_document<>* pDocument);
+    void extractNodeData(xml_node<>* pDocumentNode);
+    void goThroughVector();
+    void analyzeColor(xml_node<>* pPathFound);
 };
 
 //Loop through the root element of the document
-void Selection::extractXMLData(xml_document<>* doc){
-  xml_node<>* node = doc->first_node();
-  extractNodeData(node);
+void Selection::extractXMLData(xml_document<>* pDocument){
+  xml_node<>* documentNode = pDocument->first_node();
+  extractNodeData(documentNode);
 }
 
 //goes through the rest of the elements of the document
-void Selection::extractNodeData(xml_node<>* node){
-  for (node = node->first_node(); node != NULL; node = node->next_sibling()){
-    if (node->type() == node_element){
-      string nodeName = node->name();
-      xml_attribute<>* attrib = node->first_attribute();
+void Selection::extractNodeData(xml_node<>* pDocumentNode){
+  for (pDocumentNode = pDocumentNode->first_node(); pDocumentNode != NULL; pDocumentNode = pDocumentNode->next_sibling()){
+    if (pDocumentNode->type() == node_element){
+      string nodeName = pDocumentNode->name();
       
       if(nodeName == "path"){
-        vectorPaths.push_back(node);
+        vectorPaths.push_back(pDocumentNode);
       }
-      extractNodeData(node);
+      extractNodeData(pDocumentNode);
     }
   }
 }
 
 //Get each path ??????????
-void Selection::nose(){
-  for(int i = 0; i < vectorPaths.size(); i++){
-    xml_node<>* pathFound = vectorPaths[i];
+void Selection::goThroughVector(){
+  for(int vectorCounter = 0; vectorCounter < vectorPaths.size(); vectorCounter++){
+    xml_node<>* pathFound = vectorPaths[vectorCounter];
     analyzeColor(pathFound);
   }
 }
 
 //Analizes each path one by one
-void Selection::analyzeColor(xml_node<>* pathFound){
-  xml_attribute<>* attrib = pathFound->first_attribute();
+void Selection::analyzeColor(xml_node<>* pPathFound){
+  xml_attribute<>* pathAttribute = pPathFound->first_attribute();
 
-  for (xml_attribute<>* attrib = pathFound->first_attribute(); attrib != NULL; attrib = attrib->next_attribute()){
-    string attributeName = attrib->name();
-    string attributeValue = attrib->value();
+  for (xml_attribute<>* pathAttribute = pPathFound->first_attribute(); pathAttribute != NULL; pathAttribute = pathAttribute->next_attribute()){
+    string nameAttribute = pathAttribute->name();
+    string valueAttribute = pathAttribute->value();
 
     for(int eachColorIndex = 0; eachColorIndex < colorList.size(); eachColorIndex++){
       string hexColor = colorList[eachColorIndex];
 
-      if (hexColor == "#000000" && attributeName == "opacity"){ matchColorList.push_back(attributeValue); }
-      if (attributeName == "fill" && hexColor == attributeValue){ matchColorList.push_back(attributeValue);}
-      if (attributeName == "stroke"){
-        
-      }
+      if (hexColor == "#000000" && nameAttribute == "opacity"){ matchColorList.push_back(valueAttribute); }
+      if (nameAttribute == "fill" && hexColor == valueAttribute){ matchColorList.push_back(valueAttribute);}
+      
     }
   }
 }
@@ -85,10 +82,10 @@ int main (){
   absolutePoints = { {34,29} , {16.7,95.3} , {3,7} };
   
   file<> file("Forest.svg"); // read and load file into memory
-  xml_document<> myDoc; 
-  myDoc.parse<0>(file.data()); 
+  xml_document<> imageSVG; 
+  imageSVG.parse<0>(file.data()); 
 
   Selection selection = Selection(colorList, absolutePoints);
-  selection.extractXMLData(&myDoc);
+  selection.extractXMLData(&imageSVG);
 
 }
