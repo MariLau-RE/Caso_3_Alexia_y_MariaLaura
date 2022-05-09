@@ -84,6 +84,7 @@ void Selection::analyzeColor(xml_node<>* pPathFound){
   }
 }
 
+//Analizes each path one by one
 void Selection::analyzeAbsolutePoints(xml_node<>* pPathFound){
   xml_attribute<>* pathAttribute = pPathFound->first_attribute();
   string nameAttribute = pathAttribute->name();
