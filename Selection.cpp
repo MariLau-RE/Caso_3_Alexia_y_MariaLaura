@@ -60,7 +60,15 @@ void Selection:: printXMLData(xml_document<>* doc){
 void Selection::printPath(){
 
   for(int i = 0; i < vectorPaths.size(); i++){
-    cout << "Etiqueta: " << vectorPaths[i]->name() << endl;  
+    xml_node<>* path = vectorPaths[i];
+    xml_attribute<>* attrib = path->first_attribute();
+
+    cout << "Path " << i << endl;
+    for (xml_attribute<>* attrib = path->first_attribute(); attrib != NULL; attrib = attrib->next_attribute()){
+      //cout << " Atributo: " << attrib->name() << endl;
+      //cout << "\tValor: " << attrib->value() << endl;
+      //cada path mandarlo al metodo analizar
+    }
   }
 }
 
