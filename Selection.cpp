@@ -59,11 +59,9 @@ void Selection:: printXMLData(xml_document<>* doc){
 //Print all the paths 
 void Selection::printPath(){
 
-    for(int i=0; i<vectorPaths.size(); i++){
-
-        cout <<"Etiqueta"<< vectorPaths[i]->name() <<endl;
-
-}
+  for(int i = 0; i < vectorPaths.size(); i++){
+    cout << "Etiqueta: " << vectorPaths[i]->name() << endl;  
+  }
 }
 
 int main (){
@@ -71,13 +69,13 @@ int main (){
   vector <string> colorList;
   vector <double> absolutePoints;
   
-  file<> file("Forest.svg"); // read and load file into memorya
+  file<> file("Forest.svg"); // read and load file into memory
   xml_document<> myDoc; 
   myDoc.parse<0>(file.data()); 
 
   Selection selection = Selection(colorList, absolutePoints);
 
-  //selection.printXMLData(&myDoc);
+  selection.printXMLData(&myDoc);
 
   selection.printPath();
   
