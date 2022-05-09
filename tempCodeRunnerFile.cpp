@@ -1,1 +1,0 @@
-string newColor = "pink";

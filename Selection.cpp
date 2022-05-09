@@ -12,18 +12,19 @@ using namespace std;
 class Selection{
   private: 
     vector <string> colorList;
-    vector <double> absolutePoints;
+    vector<vector<float>> absolutePoints;
     vector <xml_node<>*> vectorPaths;
+    vector <string> matchColorList;
+    vector <double> matchAbsolutePoints;
 
   public:
-    Selection(vector <string> _colorList, vector <double> _absolutePoints){
+    Selection(vector <string> _colorList, vector<vector<float>> _absolutePoints){
       colorList = _colorList;
       absolutePoints = _absolutePoints;
       
     }
     void printXMLData(xml_document<>* doc);
     void printNodeData(xml_node<>* node);
-    void printPath();
     void analyzePath();
 };
 
@@ -57,36 +58,36 @@ void Selection:: printXMLData(xml_document<>* doc){
   printNodeData(node);
 }
 
-//Print all the paths 
-void Selection::printPath(){
+//Analizes each path one by one
+void Selection::analyzePath(){
 
   for(int i = 0; i < vectorPaths.size(); i++){
+
     xml_node<>* path = vectorPaths[i];
     xml_attribute<>* attrib = path->first_attribute();
 
     cout << "Path " << i << endl;
+
     for (xml_attribute<>* attrib = path->first_attribute(); attrib != NULL; attrib = attrib->next_attribute()){
-      //cout << " Atributo: " << attrib->name() << endl;
+        string attribute= attrib->name();
+        if (attribute=="fill"||attribute=="opacity"||attribute=="stroke"){
+
+
+
+
+        }
       //cout << "\tValor: " << attrib->value() << endl;
       //cada path mandarlo al metodo analizar
     }
   }
 }
 
-void Selection::analyzePath(){
-
-    vector <string> matchColorList;
-
-    for(int i = 0; i < vectorPaths.size(); i++){
-
-
-    }
-}
-
 int main (){
 
   vector <string> colorList;
-  vector <double> absolutePoints;
+  vector<vector<float>> absolutePoints;
+  colorList= {"#FFFFFF" , "#D76F16", "#79271B",};
+  absolutePoints = { {34,29} , {16.7,95.3} , {3,7} };
   
   file<> file("Forest.svg"); // read and load file into memory
   xml_document<> myDoc; 
@@ -96,6 +97,5 @@ int main (){
 
   selection.printXMLData(&myDoc);
 
-  selection.printPath();
   
 }

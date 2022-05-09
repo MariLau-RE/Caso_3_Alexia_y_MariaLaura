@@ -3,7 +3,7 @@
 //#include "Observer.hpp"
 #include "Animation.cpp"
 #include "Selection.cpp"
-#include "Read.cpp"
+
 
 int main () {
     vector <int> colorList;
